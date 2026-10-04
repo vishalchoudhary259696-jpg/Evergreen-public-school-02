@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Gallery · Evergreen Senior Secondary School
+    </title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="style.css">
+
+    <style>
+
+        .gallery-hero {
+
+            min-height: 65vh;
+
+            display: flex;
+
+            align-items: end;
+
+            padding: 150px 0 80px;
+
+            color: white;
+
+            background:
+
+                linear-gradient(
+                    90deg,
+                    rgba(2,45,32,.94),
+                    rgba(2,45,32,.35)
+                ),
+
+                url("images/gallery-hero.jpg")
+                center / cover no-repeat;
+
+        }
+
+
+        .gallery-hero h1 {
+
+            font-size:
+                clamp(3rem,7vw,6rem);
+
+            max-width: 900px;
+
+            letter-spacing: -.05em;
+
+            margin-top: 20px;
+
+        }
+
+
+        .gallery-hero h1 em {
+
+            color: #cce99a;
+
+        }
+
+
+        .gallery-hero p {
+
+            color: #d1ddd7;
+
+            max-width: 600px;
+
+            margin-top: 20px;
+
+        }
+
+
+        .gallery-section {
+
+            padding: 100px 0;
+
+        }
+
+
+        .filters {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 8px;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        .filters button {
+
+            border: 1px solid var(--border);
+
+            background: transparent;
+
+            padding: 10px 18px;
+
+            cursor: pointer;
+
+            font-size: 11px;
+
+        }
+
+
+        .filters button.active,
+
+        .filters button:hover {
+
+            background: var(--green);
+
+            color: white;
+
+            border-color: var(--green);
+
+        }
+
+
+        .gallery-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            grid-auto-rows: 300px;
+
+            gap: 15px;
+
+        }
+
+
+        .gallery-card {
+
+            position: relative;
+
+            border: 0;
+
+            overflow: hidden;
+
+            background: var(--green);
+
+            cursor: pointer;
+
+            text-align: left;
+
+        }
+
+
+        .gallery-card.tall {
+
+            grid-row: span 2;
+
+        }
+
+
+        .gallery-card.wide {
+
+            grid-column: span 2;
+
+        }
+
+
+        .gallery-photo {
+
+            position: absolute;
+
+            inset: 0;
+
+            background-position: center;
+
+            background-size: cover;
+
+            transition:
+                transform .7s ease;
+
+        }
+
+
+        .gallery-card:hover
+        .gallery-photo {
+
+            transform: scale(1.07);
+
+        }
+
+
+        .gallery-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            background:
+
+                linear-gradient(
+                    transparent 40%,
+                    rgba(0,0,0,.75)
+                );
+
+        }
+
+
+        .gallery-title {
+
+            position: absolute;
+
+            z-index: 2;
+
+            left: 22px;
+
+            bottom: 20px;
+
+            color: white;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+        }
+
+
+        .gallery-one {
+
+            background-image:
+                url("images/gallery1.jpg");
+
+        }
+
+
+        .gallery-two {
+
+            background-image:
+                url("images/gallery2.jpg");
+
+        }
+
+
+        .gallery-three {
+
+            background-image:
+                url("images/gallery3.jpg");
+
+        }
+
+
+        .gallery-four {
+
+            background-image:
+                url("images/gallery4.jpg");
+
+        }
+
+
+        .gallery-five {
+
+            background-image:
+                url("images/gallery5.jpg");
+
+        }
+
+
+        .gallery-six {
+
+            background-image:
+                url("images/gallery6.jpg");
+
+        }
+
+
+        /* LIGHTBOX */
+
+        .lightbox {
+
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 9999;
+
+            background:
+                rgba(2,20,14,.96);
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+
+            padding: 30px;
+
+        }
+
+
+        .lightbox.open {
+
+            display: flex;
+
+        }
+
+
+        .lightbox-image {
+
+            width:
+                min(1100px, 92vw);
+
+            height:
+                min(75vh, 750px);
+
+            background:
+
+                center /
+                contain
+                no-repeat;
+
+        }
+
+
+        .lightbox-caption {
+
+            color: white;
+
+            margin-top: 15px;
+
+            font-size: 13px;
+
+        }
+
+
+        .lightbox-close {
+
+            position: absolute;
+
+            top: 20px;
+
+            right: 30px;
+
+            border: 0;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 45px;
+
+            cursor: pointer;
+
+        }
+
+
+        @media(max-width:700px) {
+
+            .gallery-grid {
+
+                grid-template-columns: 1fr;
+
+                grid-auto-rows: 300px;
+
+            }
+
+
+            .gallery-card.tall,
+            .gallery-card.wide {
+
+                grid-column: auto;
+
+                grid-row: auto;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar"
+        id="navbar">
+
+    <a href="index.html"
+       class="brand">
+
+        <img src="images/logo.png">
+
+        <div class="brand-text">
+
+            <strong>EVERGREEN</strong>
+
+            <small>
+                Senior Secondary School
+            </small>
+
+        </div>
+
+    </a>
+
+
+    <button class="menu-button"
+            id="menuButton">
+
+        <span></span>
+
+        <span></span>
+
+    </button>
+
+
+    <nav class="navigation"
+         id="navigation">
+
+        <a href="index.html">
+            Home
+        </a>
+
+        <a href="about.html">
+            About
+        </a>
+
+        <a href="facilities.html">
+            Facilities
+        </a>
+
+        <a href="gallery.html"
+           class="active">
+            Gallery
+        </a>
+
+        <a href="admissions.html">
+            Admissions
+        </a>
+
+        <a href="contact.html"
+           class="contact-nav">
+            Contact
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<section class="gallery-hero">
+
+    <div class="container">
+
+        <span class="section-label light">
+
+            SCHOOL LIFE
+
+        </span>
+
+
+        <h1>
+
+            Moments from
+            <em>Evergreen.</em>
+
+        </h1>
+
+
+        <p>
+
+            A glimpse into learning,
+            celebrations, sports and
+            everyday school life.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<section class="gallery-section">
+
+    <div class="container">
+
+
+        <div class="filters">
+
+            <button
+                class="active"
+                data-filter="all">
+
+                All
+
+            </button>
+
+            <button data-filter="campus">
+                Campus
+            </button>
+
+            <button data-filter="events">
+                Events
+            </button>
+
+            <button data-filter="sports">
+                Sports
+            </button>
+
+            <button data-filter="students">
+                Students
+            </button>
+
+        </div>
+
+
+
+        <div class="gallery-grid">
+
+
+            <button
+                class="gallery-card tall reveal"
+                data-category="campus"
+                data-image="images/gallery1.jpg"
+                data-title="Evergreen Campus">
+
+                <div class="gallery-photo gallery-one"></div>
+
+                <span class="gallery-title">
+                    Evergreen Campus ↗
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="gallery-card reveal"
+                data-category="students"
+                data-image="images/gallery2.jpg"
+                data-title="Learning Together">
+
+                <div class="gallery-photo gallery-two"></div>
+
+                <span class="gallery-title">
+                    Learning Together ↗
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="gallery-card wide reveal"
+                data-category="events"
+                data-image="images/gallery3.jpg"
+                data-title="School Celebration">
+
+                <div class="gallery-photo gallery-three"></div>
+
+                <span class="gallery-title">
+                    School Celebration ↗
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="gallery-card reveal"
+                data-category="sports"
+                data-image="images/gallery4.jpg"
+                data-title="Sports Day">
+
+                <div class="gallery-photo gallery-four"></div>
+
+                <span class="gallery-title">
+                    Sports Day ↗
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="gallery-card tall reveal"
+                data-category="students"
+                data-image="images/gallery5.jpg"
+                data-title="Classroom">
+
+                <div class="gallery-photo gallery-five"></div>
+
+                <span class="gallery-title">
+                    Classroom ↗
+                </span>
+
+            </button>
+
+
+
+            <button
+                class="gallery-card reveal"
+                data-category="campus"
+                data-image="images/gallery6.jpg"
+                data-title="Green Campus">
+
+                <div class="gallery-photo gallery-six"></div>
+
+                <span class="gallery-title">
+                    Green Campus ↗
+                </span>
+
+            </button>
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- LIGHTBOX -->
+
+<div class="lightbox"
+     id="lightbox">
+
+    <button
+        class="lightbox-close"
+        id="closeLightbox">
+
+        ×
+
+    </button>
+
+
+    <div
+        class="lightbox-image"
+        id="lightboxImage">
+    </div>
+
+
+    <div
+        class="lightbox-caption"
+        id="lightboxCaption">
+    </div>
+
+</div>
+
+
+
+<script src="script.js"></script>
+
+
+<script>
+
+    /* ==========================
+       GALLERY FILTER
+       ========================== */
+
+    const filterButtons =
+        document.querySelectorAll(
+            ".filters button"
+        );
+
+
+    const galleryCards =
+        document.querySelectorAll(
+            ".gallery-card"
+        );
+
+
+    filterButtons.forEach(button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                filterButtons.forEach(
+                    b =>
+                    b.classList.remove("active")
+                );
+
+
+                button.classList.add("active");
+
+
+                const filter =
+                    button.dataset.filter;
+
+
+                galleryCards.forEach(card => {
+
+                    if (
+                        filter === "all" ||
+                        card.dataset.category === filter
+                    ) {
+
+                        card.style.display = "";
+
+                    } else {
+
+                        card.style.display = "none";
+
+                    }
+
+                });
+
+            }
+        );
+
+    });
+
+
+
+    /* ==========================
+       LIGHTBOX
+       ========================== */
+
+    const lightbox =
+        document.getElementById("lightbox");
+
+
+    const lightboxImage =
+        document.getElementById(
+            "lightboxImage"
+        );
+
+
+    const lightboxCaption =
+        document.getElementById(
+            "lightboxCaption"
+        );
+
+
+    galleryCards.forEach(card => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                const image =
+                    card.dataset.image;
+
+
+                const title =
+                    card.dataset.title;
+
+
+                lightboxImage.style
+                    .backgroundImage =
+                    `url("${image}")`;
+
+
+                lightboxCaption
+                    .textContent =
+                    title;
+
+
+                lightbox.classList.add(
+                    "open"
+                );
+
+            }
+        );
+
+    });
+
+
+    document
+        .getElementById("closeLightbox")
+        .addEventListener(
+            "click",
+            () => {
+
+                lightbox.classList.remove(
+                    "open"
+                );
+
+            }
+        );
+
+
+    lightbox.addEventListener(
+        "click",
+        event => {
+
+            if (
+                event.target === lightbox
+            ) {
+
+                lightbox.classList.remove(
+                    "open"
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+
+</body>
+
+</html>
